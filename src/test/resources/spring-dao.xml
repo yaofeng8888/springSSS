@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        ">
+        <!--1、加载链接数据库的配置文件 -->
+        <context:property-placeholder location="classpath:db.properties"/>
+        <!--2、配置数据库连接池  -->
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!-- 链接的基本信息 -->
+        <!--链接驱动  -->
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <!-- 链接URL -->
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+		<!-- 链接用户名 -->
+		<property name="user" value="${jdbc.user}"></property>
+		<!-- 链接密码 -->
+		<property name="password" value="${jdbc.password}"></property>
+        </bean>
+        <!-- 配置模板 -->
+        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+        </bean>
+        
+        <!-- 扫描注解类 -->
+        <context:component-scan base-package="com.yaofeng.dao.Impl">
+        </context:component-scan>
+</beans>
