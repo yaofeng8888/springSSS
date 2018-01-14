@@ -4,35 +4,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.apache.taglibs.standard.tag.el.sql.SetDataSourceTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
-import com.yaofeng.dao.IUser;
+import com.yaofeng.dao.IUserDao;
 import com.yaofeng.pojo.po.User;
 
 @Repository
-public class UserImpl extends JdbcDaoSupport implements IUser {
-	
+public class UserDaoImpl implements IUserDao {
 	@Autowired
-	public void SetDataSource2(DataSource dataSource) {
-		setDataSource(dataSource);
-	}
+	private JdbcTemplate JdbcTemplate;
 	
 	@Override
 	public List<User> userlist() {
 		List<User> userlist = null;
 		try {
 			String sql = "select * from user";
-			userlist = getJdbcTemplate().query(sql,new RowMapper<User>(){
+			userlist = JdbcTemplate.query(sql,new RowMapper<User>(){
 				public User mapRow(ResultSet resultSet,int i)throws SQLException{
-					return mapRowHandler(resultSet);
-					
+					return mapRowHandler(resultSet);					
 				}	
 			});
 		} catch (Exception e) {
